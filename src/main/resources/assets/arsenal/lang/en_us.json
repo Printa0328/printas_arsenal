@@ -1,0 +1,24 @@
+{
+  "itemGroup.arsenal": "Arsenal",
+
+  "item.arsenal.soul_metal_ingot": "Soul Metal Ingot",
+
+  "item.arsenal.charge_halberd": "Rechargeable Halberd",
+  "item.arsenal.charge_halberd.desc": "Alternates between spear and axe blade on use",
+  "item.arsenal.charge_halberd2_desc": "When the charge is 15 or higher, it transforms into a halberd when used while crouching.",
+
+  "item.arsenal.soul_metal_great_sword": "Soul Metal Great Sword",
+  "item.arsenal.soul_metal_great_sword.desc": "Sets enemies on fire or ignites the weapon when you are on fire.",
+  "item.arsenal.soul_metal_great_sword2.desc": "Activates skill when used while the weapon is on fire.",
+
+  "item.arsenal.soul_knight_spawn_egg": "Soul knight Spawn Egg",
+  "item.arsenal.werewolf_spawn_egg": "Werewolf Spawn Egg",
+
+  "entity.arsenal.soul_knight": "Soul knight",
+  "entity.arsenal.werewolf": "Werewolf",
+
+  "enchantment.arsenal.thermal_repair": "Thermal Repair",
+  "enchantment.arsenal.thermal_repair.desc": "durability restored when the Soul Metal Great Sword is engulfed in flames",
+  "enchantment.arsenal.ember_of_ray": "Ember of Ray",
+  "enchantment.arsenal.ember_of_ray.desc": "Reduces the cooldown of the Soul Metal Great Sword"
+}

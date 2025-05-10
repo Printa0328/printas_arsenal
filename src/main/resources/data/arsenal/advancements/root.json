@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "arsenal:soul_knight_great_sword"
+    },
+    "title": {
+      "translate": "advancements.arsenal.root.title"
+    },
+    "description": {
+      "translate": "advancements.arsenal.root.description"
+    },
+    "background": "arsenal:textures/block/obsidian_bricks.png",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "custom_test_name": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

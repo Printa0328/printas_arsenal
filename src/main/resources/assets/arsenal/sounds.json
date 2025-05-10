@@ -1,0 +1,42 @@
+{
+"werewolf_hurt": {
+    "subtitle": "werewolf_hurt.sub",
+    "sounds": [
+      {
+        "name": "arsenal:entity/werewolf_hurt"
+      }
+    ]
+  },
+"soul_knight_hurt": {
+    "subtitle": "soul_knight_hurt.sub",
+    "sounds": [
+      {
+        "name": "arsenal:entity/soul_knight_hurt"
+      }
+    ]
+  },
+"fire_cast": {
+    "subtitle": "fire_cast.sub",
+    "sounds": [
+      {
+        "name": "arsenal:item/fire_cast"
+      }
+    ]
+  },
+"halberd_attack_1": {
+    "subtitle": "charge_halberd_attack_1.sub",
+    "sounds": [
+      {
+        "name": "arsenal:item/charge_halberd_attack_1"
+      }
+    ]
+  },
+"phase_change": {
+    "subtitle": "charge_halberd_mod_change.sub",
+    "sounds": [
+      {
+        "name": "arsenal:item/charge_halberd_mod_change"
+      }
+    ]
+  }
+}

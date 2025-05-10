@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "#",
+        "D"
+    ],
+    "key": {
+        "#": {
+            "item": "arsenal:soul_metal_ingot"
+        },
+        "D": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "arsenal:soul_metal_great_sword",
+        "count": 1
+    }
+}

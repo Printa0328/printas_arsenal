@@ -1,0 +1,24 @@
+{
+  "itemGroup.arsenal": "아스널",
+
+  "item.arsenal.soul_metal_ingot": "영혼 금속 주괴",
+
+  "item.arsenal.charge_halberd": "충전식 할버드",
+  "item.arsenal.charge_halberd.desc": "사용시 창과 도끼를 오간다",
+  "item.arsenal.charge_halberd2_desc": "충전이 15 이상 일때 웅크리고 사용시 할버드로 돌입한다",
+
+  "item.arsenal.soul_metal_great_sword": "영혼 금속 대검",
+  "item.arsenal.soul_metal_great_sword.desc": "적을 불태우거나 자신이 불타면 무기가 불탄다",
+  "item.arsenal.soul_metal_great_sword2.desc": "무기가 불탈때 사용하여 기술발동",
+
+  "item.arsenal.soul_knight_spawn_egg": "영혼 기사 생성 알",
+  "item.arsenal.werewolf_spawn_egg": "웨어울프 생성 알",
+
+  "entity.arsenal.soul_knight": "영혼 기사",
+  "entity.arsenal.werewolf": "웨어울프",
+
+  "enchantment.arsenal.thermal_repair": "열전수리",
+  "enchantment.arsenal.thermal_repair.desc": "영혼 금속 대검이 불탈때 내구도가 회복됩니다",
+  "enchantment.arsenal.ember_of_ray": "광선의 불씨",
+  "enchantment.arsenal.ember_of_ray.desc": "영혼 금속 대검의 쿨타임을 줄여줍니다"
+}
