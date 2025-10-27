@@ -1,7 +1,7 @@
 package com.github.printa.arsenal.server.entity.effect;
 
 
-import com.github.printa.arsenal.server.registry.ModEntities;
+import com.github.printa.arsenal.server.registries.EntityRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -29,7 +29,7 @@ public class ScreenShake_Entity extends Entity {
     }
 
     public ScreenShake_Entity(Level world, Vec3 position, float radius, float magnitude, int duration, int fadeDuration) {
-        super(ModEntities.SCREEN_SHAKE.get(), world);
+        super(EntityRegistry.SCREEN_SHAKE.get(), world);
         setRadius(radius);
         setMagnitude(magnitude);
         setDuration(duration);

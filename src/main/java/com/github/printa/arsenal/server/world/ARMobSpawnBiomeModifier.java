@@ -1,7 +1,7 @@
 package com.github.printa.arsenal.server.world;
 
 import com.github.printa.arsenal.Arsenal;
-import com.github.printa.arsenal.server.registry.WorldRegistry;
+import com.github.printa.arsenal.server.registries.WorldRegistry;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ARMobSpawnBiomeModifier implements BiomeModifier {
-    private static final RegistryObject<Codec<? extends BiomeModifier>> SERIALIZER = RegistryObject.create(new ResourceLocation(Arsenal.MODID, "cataclysm_mob_spawns"), ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Arsenal.MODID);
+    private static final RegistryObject<Codec<? extends BiomeModifier>> SERIALIZER = RegistryObject.create(ResourceLocation.fromNamespaceAndPath(Arsenal.MODID, "arsenal_mob_spawns"), ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Arsenal.MODID);
 
     public ARMobSpawnBiomeModifier() {
     }

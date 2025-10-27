@@ -1,21 +1,17 @@
 package com.github.printa.arsenal.server.entity.InternalAnimationMonster;
 
-import com.github.printa.arsenal.client.animation.Soul_knight_Animation;
 import com.github.printa.arsenal.server.entity.InternalAnimationMonster.AI.InternalAttackGoal;
 import com.github.printa.arsenal.server.entity.InternalAnimationMonster.AI.InternalMoveGoal;
-import com.github.printa.arsenal.server.entity.effect.ScreenShake_Entity;
 import com.github.printa.arsenal.server.entity.etc.SmartBodyHelper2;
 import com.github.printa.arsenal.server.entity.etc.path.CMPathNavigateGround;
-import com.github.printa.arsenal.server.registry.ModEffect;
-import com.github.printa.arsenal.server.registry.ModEntities;
-import com.github.printa.arsenal.server.registry.ModItems;
-import com.github.printa.arsenal.server.registry.ModSounds;
+import com.github.printa.arsenal.server.registries.EffectRegistry;
+import com.github.printa.arsenal.server.registries.EntityRegistry;
+import com.github.printa.arsenal.server.registries.SoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -30,21 +26,16 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
-
-import static net.minecraft.sounds.SoundEvents.*;
-import static net.minecraft.world.level.block.AnvilBlock.damage;
 
 public class Soul_knight_Entity extends Internal_Animation_Monster {
     public AnimationState idleAnimationState = new AnimationState();
@@ -64,13 +55,15 @@ public class Soul_knight_Entity extends Internal_Animation_Monster {
     }
 
     protected void registerGoals() {
+        // 기본
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D, 80));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.goalSelector.addGoal(2, new InternalMoveGoal(this,false,1.0D));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.goalSelector.addGoal(100, new InternalMoveGoal(this,false,1.0D));
 
+        // 패턴
         this.goalSelector.addGoal(0, new InternalAttackGoal(this,0,1,0,56,24,5){
             @Override
             public boolean canUse() {
@@ -92,6 +85,7 @@ public class Soul_knight_Entity extends Internal_Animation_Monster {
                     float f1 = (float) Math.cos(Math.toRadians(entity.getYRot() + 90));
                     float f2 = (float) Math.sin(Math.toRadians(entity.getYRot() + 90));
                     entity.push(f1 * 1.2, 0, f2 * 1.2);
+                    //this.entity.setLastHurtMob(this.targetMob);
                 }
             }
 
@@ -111,7 +105,7 @@ public class Soul_knight_Entity extends Internal_Animation_Monster {
         this.goalSelector.addGoal(0, new InternalAttackGoal(this,0,4,0,57,64,6));
     }
 
-    public static AttributeSupplier.Builder soul_knight() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.FOLLOW_RANGE, 24.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.28F)
@@ -320,7 +314,7 @@ public class Soul_knight_Entity extends Internal_Animation_Monster {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.SOUL_KNIGHT_HURT.get();
+        return SoundRegistry.SOUL_KNIGHT_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
@@ -328,23 +322,23 @@ public class Soul_knight_Entity extends Internal_Animation_Monster {
     }
 
     @Override
-    protected BodyRotationControl createBodyControl() {
+    protected @NotNull BodyRotationControl createBodyControl() {
         return new SmartBodyHelper2(this);
     }
 
-    protected PathNavigation createNavigation(Level worldIn) {
-        return new CMPathNavigateGround(this, worldIn);
+    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
+        return new CMPathNavigateGround(this, level);
     }
 
     public boolean canBeAffected(MobEffectInstance p_34192_) {
-        return p_34192_.getEffect() != ModEffect.EFFECTSTUN.get() && super.canBeAffected(p_34192_);
+        return p_34192_.getEffect() != EffectRegistry.EFFECTSTUN.get() && super.canBeAffected(p_34192_);
     }
 
-    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
-        return ModEntities.rollSpawn(1, this.getRandom(), spawnReasonIn) && super.checkSpawnRules(worldIn, spawnReasonIn);
+    public boolean checkSpawnRules(@NotNull LevelAccessor levelaccessor, @NotNull MobSpawnType mobspawntype) {
+        return EntityRegistry.rollSpawn(1, this.getRandom(), mobspawntype) && super.checkSpawnRules(levelaccessor, mobspawntype);
     }
 
-    public static boolean canSoulKnightspawnSpawnRules(EntityType<? extends Soul_knight_Entity> p_219020_, LevelAccessor p_219021_, MobSpawnType p_219022_, BlockPos p_219023_, RandomSource p_219024_) {
+    public static boolean canSoulKnightSpawnRules(EntityType<? extends Soul_knight_Entity> p_219020_, LevelAccessor p_219021_, MobSpawnType p_219022_, BlockPos p_219023_, RandomSource p_219024_) {
         return checkAnyLightMonsterSpawnRules(p_219020_, p_219021_, p_219022_, p_219023_, p_219024_);
     }
 
@@ -352,7 +346,7 @@ public class Soul_knight_Entity extends Internal_Animation_Monster {
         return false;
     }
 
-    protected boolean canRide(Entity p_31508_) {
+    protected boolean canRide(@NotNull Entity entity) {
         return false;
     }
 }

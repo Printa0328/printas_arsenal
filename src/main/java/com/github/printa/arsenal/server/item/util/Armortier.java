@@ -1,8 +1,6 @@
 package com.github.printa.arsenal.server.item.util;
 
-import com.github.printa.arsenal.server.registry.ModItems;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;

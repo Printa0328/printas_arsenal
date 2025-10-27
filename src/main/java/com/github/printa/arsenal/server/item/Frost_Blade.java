@@ -1,27 +1,17 @@
 package com.github.printa.arsenal.server.item;
 
 import com.github.printa.arsenal.Arsenal;
-import com.github.printa.arsenal.client.particle.util.AdvancedParticleHelper;
-import com.github.printa.arsenal.client.particle.util.ParticleComponent;
-import com.github.printa.arsenal.client.particle.util.anim.AnimData;
-import com.github.printa.arsenal.server.entity.projectile.Fire_Ball_Entity;
 import com.github.printa.arsenal.server.entity.projectile.SpellProjectileEntity;
-import com.github.printa.arsenal.server.registry.ModEntities;
-import com.github.printa.arsenal.server.registry.ModParticle;
-import com.github.printa.arsenal.server.registry.ModSounds;
+import com.github.printa.arsenal.server.registries.EntityRegistry;
+import com.github.printa.arsenal.server.registries.SoundRegistry;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -34,7 +24,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.level.Level;
@@ -96,7 +85,7 @@ public class Frost_Blade extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-        return cast(world, player, hand, ModEntities.FIRE_BALL.get(), ModSounds.HALBERD_ATTACK_1.get());
+        return cast(world, player, hand, EntityRegistry.FIRE_BALL.get(), SoundRegistry.HALBERD_ATTACK_1.get());
     }
 
     public InteractionResultHolder<ItemStack> cast(final Level world, final Player entity, final InteractionHand hand, @NotNull final EntityType<? extends SpellProjectileEntity> spellProjectile, final SoundEvent soundEvent) {

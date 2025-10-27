@@ -1,6 +1,6 @@
 package com.github.printa.arsenal.client.particle;
 
-import com.github.printa.arsenal.server.registry.ModParticle;
+import com.github.printa.arsenal.server.registries.ParticleRegistry;
 import com.github.printa.arsenal.util.CMMathUtil;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.brigadier.StringReader;
@@ -233,7 +233,7 @@ public class RingParticle extends TextureSheetParticle {
 
         @Override
         public ParticleType<RingParticle.RingData> getType() {
-            return ModParticle.RING.get();
+            return ParticleRegistry.RING.get();
         }
 
         @OnlyIn(Dist.CLIENT)

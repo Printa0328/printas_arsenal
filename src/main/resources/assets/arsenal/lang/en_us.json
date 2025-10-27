@@ -14,8 +14,17 @@
   "item.arsenal.soul_knight_spawn_egg": "Soul knight Spawn Egg",
   "item.arsenal.werewolf_spawn_egg": "Werewolf Spawn Egg",
 
+  "item.arsenal.ignition_charge": "Ignition Charge",
+  "item.arsenal.incomplete_ignition_charge": "Incomplete Ignition Charge",
+
+  "item.arsenal.workbench_item_tooltip": "Used to upgrade the Weapon Workbench.",
+
+  "block.arsenal.weapon_workbench": "Weapon Workbench",
+
   "entity.arsenal.soul_knight": "Soul knight",
   "entity.arsenal.werewolf": "Werewolf",
+
+  "container.arsenal.weapon_workbench": "Weapon Workbench",
 
   "enchantment.arsenal.thermal_repair": "Thermal Repair",
   "enchantment.arsenal.thermal_repair.desc": "durability restored when the Soul Metal Great Sword is engulfed in flames",

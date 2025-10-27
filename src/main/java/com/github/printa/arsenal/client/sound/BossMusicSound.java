@@ -1,7 +1,7 @@
 package com.github.printa.arsenal.client.sound;
 
 import com.github.printa.arsenal.client.tool.ControlledAnimation;
-import com.github.printa.arsenal.server.config.CMConfig;
+import com.github.printa.arsenal.server.config.Config;
 import com.github.printa.arsenal.server.entity.etc.Animation_Monsters;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
@@ -57,7 +57,8 @@ public class BossMusicSound extends AbstractTickableSoundInstance {
             BossMusicPlayer.bossMusic = null;
         }
 
-        volume = volumeControl.getAnimationFraction() / CMConfig.BossMusicVolume;
+        //volume = volumeControl.getAnimationFraction() / Config.BossMusicVolume;
+        volume = volumeControl.getAnimationFraction() / 1;
 
         if (ticksExisted % 100 == 0) {
             Minecraft.getInstance().getMusicManager().stopPlaying();

@@ -1,7 +1,7 @@
 package com.github.printa.arsenal.client.particle;
 
-import com.github.printa.arsenal.client.render.CMRenderTypes;
-import com.github.printa.arsenal.server.registry.ModParticle;
+import com.github.printa.arsenal.client.render.RenderUtil;
+import com.github.printa.arsenal.server.registries.ParticleRegistry;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -16,7 +16,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -36,7 +35,7 @@ public class WispParticle extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return CMRenderTypes.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
+        return RenderUtil.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
     }
 
     @Override
@@ -130,7 +129,7 @@ public class WispParticle extends TextureSheetParticle {
 
         @Override
         public ParticleType<WispParticle.WispData> getType() {
-            return ModParticle.WISP.get();
+            return ParticleRegistry.WISP.get();
         }
 
         @OnlyIn(Dist.CLIENT)

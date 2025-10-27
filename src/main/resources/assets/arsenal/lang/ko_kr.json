@@ -14,11 +14,20 @@
   "item.arsenal.soul_knight_spawn_egg": "영혼 기사 생성 알",
   "item.arsenal.werewolf_spawn_egg": "웨어울프 생성 알",
 
+  "item.arsenal.ignition_charge": "점화체",
+  "item.arsenal.incomplete_ignition_charge": "불완전한 점화체",
+
+  "item.arsenal.workbench_item_tooltip": "무기 작업대에 사용하여 작업대를 강화할 수 있습니다",
+
+  "block.arsenal.weapon_workbench": "무기 작업대",
+
   "entity.arsenal.soul_knight": "영혼 기사",
   "entity.arsenal.werewolf": "웨어울프",
+
+  "container.arsenal.weapon_workbench": "무기 작업대",
 
   "enchantment.arsenal.thermal_repair": "열전수리",
   "enchantment.arsenal.thermal_repair.desc": "영혼 금속 대검이 불탈때 내구도가 회복됩니다",
   "enchantment.arsenal.ember_of_ray": "광선의 불씨",
-  "enchantment.arsenal.ember_of_ray.desc": "영혼 금속 대검의 쿨타임을 줄여줍니다"
+  "enchantment.arsenal.ember_of_ray.desc": "영혼 금속 대검의 쿨타임이 줄어듭니다"
 }

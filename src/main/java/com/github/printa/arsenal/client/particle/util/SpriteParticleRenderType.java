@@ -1,9 +1,6 @@
 package com.github.printa.arsenal.client.particle.util;
 
-import com.github.printa.arsenal.ClientProxy;
-import com.github.printa.arsenal.ClientRegistry;
-import com.github.printa.arsenal.CommonProxy;
-import com.github.printa.arsenal.client.event.ClientEvents;
+import com.github.printa.arsenal.client.event.ClientEvent;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -23,9 +20,8 @@ public class SpriteParticleRenderType implements ParticleRenderType {
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        RenderSystem.setShader(ClientRegistry::getSpriteParticleShader);
         RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
-        ClientEvents.particleMVMatrix = RenderSystem.getModelViewMatrix();
+        ClientEvent.particleMVMatrix = RenderSystem.getModelViewMatrix();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
     }
 

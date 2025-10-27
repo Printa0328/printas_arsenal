@@ -4,7 +4,7 @@
         "srcrgb": "srcalpha",
         "dstrgb": "1"
     },
-    "vertex": "arsenal:glowing_particle",
+    "vertex": "position_tex_color",
     "fragment": "arsenal:glowing_particle",
     "attributes": [
         "Position",

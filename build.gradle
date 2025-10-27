@@ -1,49 +1,24 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.neoforged.net/releases' }
-        jcenter()
-        mavenCentral()
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-    }
-    dependencies {
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-    }
-}
-
 plugins {
-    id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle' version '[6.0.18,6.2)'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
-}
-
-repositories{
-    maven {
-        name = "CurseForge"
-        url = "https://minecraft.curseforge.com/api/maven/"
-    }
-    maven {
-        name = "ModMaven"
-        url = "https://modmaven.dev"
-    }
-    maven {
-        name = "CurseMaven"
-        url = "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-
-    maven {
-        name = "Illusive Soulworks maven"
-        url = "https://maven.theillusivec4.top/"
-    }
-
 }
 
 version = mod_version
 group = mod_group_id
+
+repositories{
+    flatDir {
+        dir 'libs'
+    }
+
+    maven { url = "https://maven.theillusivec4.top" }
+    maven { url = "https://cursemaven.com" }
+    maven { url = "https://maven.blamejared.com" }
+    maven { url = "https://maven.kosmx.dev/" }
+}
 
 base {
     archivesName = mod_id
@@ -51,118 +26,61 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'official', version: '1.20.1'
+    mappings channel: mapping_channel, version: mapping_version
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    copyIdeResources = true
 
-    accessTransformer = file('src/main/resources/META-INF/A.cfg')
-
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
             workingDirectory project.file('run')
-            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
-            arg "-mixin.config="+"lionfishapi.mixins.json"
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-
-            //You have to set mixin propert if you want to run playerAnimator in development environment.
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
+            property 'forge.enabledGameTestNamespaces', mod_id
+            mods { "${mod_id}" { source sourceSets.main } }
         }
 
         server {
             workingDirectory project.file('run')
-            properties 'mixin.env.remapRefMap': 'true'
-            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', sourceSets.main.resources.srcDirs[0]
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-
-            //Add this to the server too.
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
+            property 'forge.enabledGameTestNamespaces', mod_id
+            mods { "${mod_id}" { source sourceSets.main } }
         }
 
         data {
             workingDirectory project.file('run')
-            properties 'mixin.env.remapRefMap': 'true'
-            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', sourceSets.main.resources.srcDirs[0]
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
+            property 'forge.enabledGameTestNamespaces', mod_id
+            mods { "${mod_id}" { source sourceSets.main } }
         }
     }
 }
 
-// Include resources generated by data generators.
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     // BASE
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.0"))
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.4.0")) {
-        jarJar.ranged(it, "[0.4.0,)")
-    }
 
     // Dependencies (Required)
     implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}")
-    implementation fg.deobf("curse.maven:lionfish-api-1001614:5363774")
+    implementation fg.deobf("curse.maven:lionfish-api-1001614:5922047")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
 
     // Dependencies (Extras)
-    compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}"))
-    compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-forge-api:${jei_version}"))
+    compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-forge-api:${jei_version}")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-forge:${jei_version}")
     runtimeOnly fg.deobf("curse.maven:worldedit-225608:4586218")
     runtimeOnly fg.deobf("curse.maven:enchantment-descriptions-250419:5855251")
     runtimeOnly fg.deobf("curse.maven:bookshelf-228525:5423987")
-    runtimeOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-forge:${jei_version}"))
-    runtimeOnly fg.deobf("curse.maven:neat-238372:4580940")
+    runtimeOnly fg.deobf("curse.maven:tslatentitystatus-tes-830420:7126708")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
-}
-
-
-mixin {
-    add sourceSets.main, "lionfishapi.refmap.json"
-    add sourceSets.main, "arsenal.refmap.json"
-    config 'lionfishapi.mixins.json'
-    config 'arsenal.mixins.json'
 }
 
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
@@ -172,7 +90,6 @@ def replaceProperties = [
         loader_version_range   : loader_version_range,
         mod_id                 : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
         mod_authors            : mod_authors, mod_description: mod_description, mod_credits: mod_credits,
-        mod_logo_file          : mod_logo_file,
         curios_version         : curios_version,
         player_animator_version: player_animator_version,
 ]
@@ -196,32 +113,47 @@ jar {
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : mod_authors,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs"            : "mixins.${mod_id}.json"
+                "MixinConfigs"            : "${mod_id}.mixins.json"
         ])
     }
-    exclude('**/*.bbmodel')
 }
 
-repositories {
-    flatDir {
-        dir 'libs'
-    }
-
-    maven { url = "https://maven.enginehub.org/repo/" }
-    maven { url = "https://maven.theillusivec4.top" }
-    maven { url = "https://cursemaven.com" }
-    maven { url = "https://maven.blamejared.com" }
-    maven { url = "https://maven.kosmx.dev/" }
-}
 publishing {
+    tasks.publish.dependsOn 'build'
     publications {
-        register('mavenJava', MavenPublication) {
+        mavenJava(MavenPublication) {
+
+            artifactId project.archivesBaseName
             artifact jar
         }
     }
+
     repositories {
         maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
+            name = "redspace"
+
+            if (project.version.endsWith('-SNAPSHOT')) {
+                url uri("https://code.redspace.io/snapshots")
+            } else {
+                url uri("https://code.redspace.io/releases")
+            }
+
+            credentials {
+                username = System.getenv("MAVEN_USER")
+                password = System.getenv("MAVEN_PASS")
+            }
+            authentication {
+                basic(BasicAuthentication)
+            }
         }
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+mixin {
+    add sourceSets.main, "arsenal.refmap.json"
+    config 'arsenal.mixins.json'
 }

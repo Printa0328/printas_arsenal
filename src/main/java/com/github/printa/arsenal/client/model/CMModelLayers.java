@@ -30,6 +30,6 @@ public class CMModelLayers {
     }
 
     private static ModelLayerLocation createLocation(String model, String layer) {
-        return new ModelLayerLocation(new ResourceLocation("arsenal", model), layer);
+        return new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("arsenal", model), layer);
     }
 }

@@ -14,12 +14,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class PRAamageTypes {
 
-    public static final ResourceKey<DamageType> FIRE = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Arsenal.MODID,"fire"));
-    public static final ResourceKey<DamageType> COLD = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Arsenal.MODID,"cold"));
-    public static final ResourceKey<DamageType> LIGHTNING = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Arsenal.MODID,"lightning"));
-    public static final ResourceKey<DamageType> ACID = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Arsenal.MODID,"acid"));
-    public static final ResourceKey<DamageType> RADIANT = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Arsenal.MODID,"radiant"));
-    public static final ResourceKey<DamageType> NECROTIC = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Arsenal.MODID,"necrotic"));
+    public static final ResourceKey<DamageType> FIRE = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(Arsenal.MODID,"fire"));
+    public static final ResourceKey<DamageType> COLD = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(Arsenal.MODID,"cold"));
+    public static final ResourceKey<DamageType> LIGHTNING = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(Arsenal.MODID,"lightning"));
+    public static final ResourceKey<DamageType> ACID = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(Arsenal.MODID,"acid"));
+    public static final ResourceKey<DamageType> RADIANT = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(Arsenal.MODID,"radiant"));
+    public static final ResourceKey<DamageType> NECROTIC = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(Arsenal.MODID,"necrotic"));
 
     //damage
     public static DamageSource fireDamage(Entity attacker, LivingEntity owner) {

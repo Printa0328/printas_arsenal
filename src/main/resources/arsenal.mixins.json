@@ -14,17 +14,17 @@
     "NoMagmaBlockInStructuresMixin",
     "NoMultifaceGrowthFeatureInStructuresMixin",
     "NoOreInStructuresMixin",
-    "StructureManagerAccessor",
-    "StructureProcessorAccessor",
     "StructureTemplateMixin",
-    "WorldGenRegionAccessor",
     "accessor.BeardifierAccessor",
     "accessor.BoundingBoxAccessor",
     "accessor.CriteriaTriggersAccessor",
     "accessor.FeaturePoolElementAccessor",
     "accessor.ListPoolElementAccessor",
     "accessor.SinglePoolElementAccessor",
-    "accessor.StructureTemplatePoolAccessor"
+    "accessor.StructureManagerAccessor",
+    "accessor.StructureProcessorAccessor",
+    "accessor.StructureTemplatePoolAccessor",
+    "accessor.WorldGenRegionAccessor"
   ],
   "client": [
     "Client.HumanoidModelMixin"

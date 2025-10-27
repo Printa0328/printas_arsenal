@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ARMobSpawnStructureModifier implements StructureModifier {
 
-    private static final RegistryObject<Codec<? extends StructureModifier>> SERIALIZER = RegistryObject.create(new ResourceLocation(Arsenal.MODID, "cataclysm_structure_spawns"), ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, Arsenal.MODID);
+    private static final RegistryObject<Codec<? extends StructureModifier>> SERIALIZER = RegistryObject.create(ResourceLocation.fromNamespaceAndPath(Arsenal.MODID, "arsenal_structure_spawns"), ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, Arsenal.MODID);
 
     public ARMobSpawnStructureModifier() {
     }

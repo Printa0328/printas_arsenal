@@ -1,6 +1,7 @@
 package com.github.printa.arsenal.client.mixin;
 
-import com.github.printa.arsenal.server.registry.ModTag;
+import com.github.printa.arsenal.client.mixin.accessor.WorldGenRegionAccessor;
+import com.github.printa.arsenal.server.registries.TagRegistry;
 import com.github.printa.arsenal.util.MixinUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -39,7 +40,7 @@ public class NoDeltasInStructuresMixin {
 
         Registry<Structure> configuredStructureFeatureRegistry = context.level().registryAccess().registryOrThrow(Registries.STRUCTURE);
         StructureManager structureManager = ((WorldGenRegionAccessor)context.level()).getStructureManager();
-        for (Holder<Structure> configuredStructureFeature : configuredStructureFeatureRegistry.getOrCreateTag(ModTag.BLOCKED_BASALT)) {
+        for (Holder<Structure> configuredStructureFeature : configuredStructureFeatureRegistry.getOrCreateTag(TagRegistry.BLOCKED_BASALT)) {
             if (MixinUtil.getStructureAt(structureManager, context.origin(),  configuredStructureFeature.value()).isValid()) {
                 cir.setReturnValue(false);
                 return;

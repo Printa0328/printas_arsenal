@@ -1,6 +1,6 @@
 package com.github.printa.arsenal.server.entity.projectile;
 
-import com.github.printa.arsenal.server.registry.ModEntities;
+import com.github.printa.arsenal.server.registries.EntityRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
@@ -22,7 +22,7 @@ public class Ray_Of_Fire_Visual_Entity extends Entity implements IEntityAddition
     public float distance;
 
     public Ray_Of_Fire_Visual_Entity(Level level, Vec3 start, Vec3 end, LivingEntity owner) {
-        super(ModEntities.RAY_OF_FIRE_VISUAL_ENTITY.get(), level);
+        super(EntityRegistry.RAY_OF_FIRE_VISUAL_ENTITY.get(), level);
         this.setPos(start.subtract(0, .75f, 0));
         this.distance = (float) start.distanceTo(end);
         this.setRot(owner.getYRot(), owner.getXRot());

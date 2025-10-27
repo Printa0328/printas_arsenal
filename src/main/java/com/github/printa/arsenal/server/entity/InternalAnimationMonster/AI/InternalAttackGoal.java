@@ -8,62 +8,52 @@ import java.util.EnumSet;
 
 public class InternalAttackGoal extends Goal {
     protected final Internal_Animation_Monster entity;
-    private final int getattackstate;
-    private final int attackstate;
-    private final int attackendstate;
-    private final int attackMaxtick;
-    private final int attackseetick;
-    private final float attackrange;
+    private final int dependencePatternId;
+    private final int patternId;
+    private final int endPatternId;
+    private final int attack_length_tick;
+    private final int fix_look;
+    private final float maximumRange;
 
-    public InternalAttackGoal(Internal_Animation_Monster entity, int getattackstate, int attackstate, int attackendstate,int attackMaxtick,int attackseetick,float attackrange) {
-        this.entity = entity;
-        this.setFlags(EnumSet.of(Flag.MOVE,Flag.LOOK,Flag.JUMP));
-        this.getattackstate = getattackstate;
-        this.attackstate = attackstate;
-        this.attackendstate = attackendstate;
-        this.attackMaxtick = attackMaxtick;
-        this.attackseetick = attackseetick;
-        this.attackrange = attackrange;
+    public InternalAttackGoal(Internal_Animation_Monster entity, int dependenceAttackId, int patternId, int endPatternId, int attack_length_tick, int fix_look, float maximumRange) {
+        this(entity, dependenceAttackId, patternId, endPatternId, attack_length_tick, fix_look, maximumRange, EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
     }
 
-    public InternalAttackGoal(Internal_Animation_Monster entity, int getattackstate, int attackstate, int attackendstate,int attackMaxtick,int attackseetick,float attackrange, EnumSet<Flag> interruptFlagTypes) {
-        this.entity = entity;
+    public InternalAttackGoal(Internal_Animation_Monster entity, int dependencePatternId, int patternId, int endPatternId,int attack_length_tick,int fix_look,float maximumRange, EnumSet<Flag> interruptFlagTypes) {
         setFlags(interruptFlagTypes);
-        this.getattackstate = getattackstate;
-        this.attackstate = attackstate;
-        this.attackendstate = attackendstate;
-        this.attackMaxtick = attackMaxtick;
-        this.attackseetick = attackseetick;
-        this.attackrange = attackrange;
+        this.entity = entity;
+        this.dependencePatternId = dependencePatternId;
+        this.patternId = patternId;
+        this.endPatternId = endPatternId;
+        this.attack_length_tick = attack_length_tick;
+        this.fix_look = fix_look;
+        this.maximumRange = maximumRange;
     }
-
 
     @Override
     public boolean canUse() {
         LivingEntity target = entity.getTarget();
-        return target != null && target.isAlive() && this.entity.distanceTo(target) < attackrange && this.entity.getAttackState() == getattackstate;
+        return target != null && target.isAlive() && this.entity.distanceTo(target) < maximumRange && this.entity.getAttackState() == dependencePatternId;
     }
-
 
     @Override
     public void start() {
-        this.entity.setAttackState(attackstate);
+        this.entity.setAttackState(patternId);
     }
 
     @Override
     public void stop() {
-        this.entity.setAttackState(attackendstate);
+        this.entity.setAttackState(endPatternId);
     }
 
     @Override
     public boolean canContinueToUse() {
-        return  this.entity.getAttackState() == attackstate && this.entity.attackTicks <= attackMaxtick;
+        return  this.entity.getAttackState() == patternId && this.entity.attackTicks <= attack_length_tick;
     }
-
 
     public void tick() {
         LivingEntity target = entity.getTarget();
-        if (entity.attackTicks < attackseetick && target != null) {
+        if (entity.attackTicks < fix_look && target != null) {
             entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
             entity.lookAt(target, 30.0F, 30.0F);
         } else {
@@ -75,10 +65,5 @@ public class InternalAttackGoal extends Goal {
     public boolean requiresUpdateEveryTick() {
         return false;
     }
-
-    //@Override
-    //public boolean canContinueToUse() {
-    //    return this.test(this.entity.getAnimation()) && this.entity.getAnimationTick() < this.entity.getAnimation().getDuration();
-    //}
 
 }

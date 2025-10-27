@@ -8,10 +8,10 @@ import com.github.printa.arsenal.server.entity.InternalAnimationMonster.AI.Inter
 import com.github.printa.arsenal.server.entity.InternalAnimationMonster.AI.InternalMoveGoal;
 import com.github.printa.arsenal.server.entity.etc.SmartBodyHelper2;
 import com.github.printa.arsenal.server.entity.etc.path.CMPathNavigateGround;
-import com.github.printa.arsenal.server.registry.ModEffect;
-import com.github.printa.arsenal.server.registry.ModEntities;
-import com.github.printa.arsenal.server.registry.ModParticle;
-import com.github.printa.arsenal.server.registry.ModSounds;
+import com.github.printa.arsenal.server.registries.EffectRegistry;
+import com.github.printa.arsenal.server.registries.EntityRegistry;
+import com.github.printa.arsenal.server.registries.ParticleRegistry;
+import com.github.printa.arsenal.server.registries.SoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -191,7 +191,7 @@ public class Werewolf_Entity extends Internal_Animation_Monster {
         });
     }
 
-    public static AttributeSupplier.Builder werewolf() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.FOLLOW_RANGE, 24.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.30F)
@@ -508,9 +508,9 @@ public class Werewolf_Entity extends Internal_Animation_Monster {
                 double x = Math.cos(theta) * radius;
                 double z = Math.sin(theta) * radius;
                 float sideOffset = (float) (random.nextGaussian() * 0.2D) * (random.nextBoolean() ? 1 : -1);
-                AdvancedParticleHelper.spawnParticle(this.level(), ModParticle.ADV_ORB.get(), pos.x, pos.y, pos.z, x * (sizeModifier + sideOffset), y * sizeModifier, z * (sizeModifier + sideOffset), true, 0, 0, 0, 45, 0.5 * (scale), 230F / 255F, 230F / 255F, 104F / 255F, 0.0F, 2.5F, 5,
+                AdvancedParticleHelper.spawnParticle(this.level(), ParticleRegistry.ADV_ORB.get(), pos.x, pos.y, pos.z, x * (sizeModifier + sideOffset), y * sizeModifier, z * (sizeModifier + sideOffset), true, 0, 0, 0, 45, 0.5 * (scale), 230F / 255F, 230F / 255F, 104F / 255F, 0.0F, 2.5F, 5,
                         true, true, false, new ParticleComponent[]{
-                                new RibbonComponent(ModParticle.FLAT_RIBBON.get(), 5, 0, 0, 0, 0.01, 196F / 255F, 196F / 255F, 86F / 255F, 0.8F, true, true,
+                                new RibbonComponent(ParticleRegistry.FLAT_RIBBON.get(), 5, 0, 0, 0, 0.01, 196F / 255F, 196F / 255F, 86F / 255F, 0.8F, true, true,
                                         new ParticleComponent[]{
                                                 new RibbonComponent.PropertyOverLength(RibbonComponent.PropertyOverLength.EnumRibbonProperty.ALPHA, AnimData.KeyTrack.startAndEnd(1.0F, 0.0F)),
                                                 new RibbonComponent.PropertyOverLength(RibbonComponent.PropertyOverLength.EnumRibbonProperty.SCALE, AnimData.KeyTrack.startAndEnd(0.0F * (scale), (scale)))
@@ -530,15 +530,23 @@ public class Werewolf_Entity extends Internal_Animation_Monster {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.WEREWOLF_HURT.get();
+        return SoundRegistry.WEREWOLF_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
         return SoundEvents.IRON_GOLEM_DEATH;
     }
 
-    public float DamageCap() {
-        return (float) 15;
+    public float MaxDamageCap() {
+        return 150.0f;
+    }
+
+    public float HardDamageCap() {
+        return 35.0f;
+    }
+
+    public float SoftDamageCap() {
+        return 15.0f;
     }
 
     public void setFlying(boolean flying) {
@@ -572,11 +580,11 @@ public class Werewolf_Entity extends Internal_Animation_Monster {
     }
 
     public boolean canBeAffected(MobEffectInstance p_34192_) {
-        return p_34192_.getEffect() != ModEffect.EFFECTSTUN.get() && super.canBeAffected(p_34192_);
+        return p_34192_.getEffect() != EffectRegistry.EFFECTSTUN.get() && super.canBeAffected(p_34192_);
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
-        return ModEntities.rollSpawn(1, this.getRandom(), spawnReasonIn) && super.checkSpawnRules(worldIn, spawnReasonIn);
+        return EntityRegistry.rollSpawn(1, this.getRandom(), spawnReasonIn) && super.checkSpawnRules(worldIn, spawnReasonIn);
     }
 
     public static boolean canSoulKnightspawnSpawnRules(EntityType<? extends Werewolf_Entity> p_219020_, LevelAccessor p_219021_, MobSpawnType p_219022_, BlockPos p_219023_, RandomSource p_219024_) {

@@ -11,7 +11,7 @@ public class AnimationHolder {
     public final boolean animatesLegs;
 
     public AnimationHolder(String path, boolean playOnce, boolean animatesLegs) {
-        this.playerAnimation = path.contains(":") ? new ResourceLocation(path) : Arsenal.id(path);
+        this.playerAnimation = path.contains(":") ? ResourceLocation.parse(path) : Arsenal.id(path);
         this.isPass = false;
         this.animatesLegs = animatesLegs;
     }

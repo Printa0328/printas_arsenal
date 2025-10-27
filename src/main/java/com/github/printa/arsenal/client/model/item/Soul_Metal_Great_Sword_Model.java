@@ -26,6 +26,7 @@ public class Soul_Metal_Great_Sword_Model extends AdvancedEntityModel<Entity> {
 		root.setTextureOffset(14, 64).addBox(-13.0F, -10.0F, -1.5F, 4.0F, 1.0F, 3.0F, 0.0F, false);
 		root.setTextureOffset(60, 59).addBox(-2.5F, 11.0F, -1.5F, 5.0F, 2.0F, 3.0F, 0.0F, false);
 		root.setTextureOffset(0, 64).addBox(9.0F, -10.0F, -1.5F, 4.0F, 1.0F, 3.0F, 0.0F, false);
+		this.updateDefaultPose();
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {

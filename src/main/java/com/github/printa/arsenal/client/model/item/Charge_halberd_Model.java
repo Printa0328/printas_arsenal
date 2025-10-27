@@ -57,6 +57,7 @@ public class Charge_halberd_Model extends AdvancedEntityModel<Entity> {
 		pommel.addChild(cube_r2);
 		setRotationAngle(cube_r2, 0.0F, 1.5708F, 0.0F);
 		cube_r2.setTextureOffset(66, 97).addBox(-3.0F, -7.0F, 0.0F, 7.0F, 7.0F, 0.0F, 0.0F, false);
+		this.updateDefaultPose();
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {

@@ -16,13 +16,10 @@ import net.minecraft.world.level.Level;
 public class Internal_Animation_Monster extends Animation_Monsters implements Enemy {
 
     public static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(Internal_Animation_Monster.class, EntityDataSerializers.INT);
-
-    public int attackTicks;
-    public int attackCooldown;
-
     public Internal_Animation_Monster(EntityType entity, Level world) {
         super(entity, world);
     }
+    public int attackTicks;
 
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -34,12 +31,32 @@ public class Internal_Animation_Monster extends Animation_Monsters implements En
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return super.hurt(source, damage);
         } else {
-            damage = Math.min(DamageCap(), damage);
+            float soft = SoftDamageCap();
+            float hard = HardDamageCap();
+            float max = MaxDamageCap();
+
+            if (damage <= soft) {
+                return super.hurt(source, damage);
+            }
+
+            float degree = 1.0f - (float)Math.pow((max - damage) / (max - soft), 0.89f);
+            damage = soft + (hard - soft) * degree;
+
+            damage = Math.min(damage, hard);
         }
         return super.hurt(source, damage);
     }
 
-    public float DamageCap() {
+    public float MaxDamageCap() {
+        return Float.MAX_VALUE;
+    }
+
+
+    public float HardDamageCap() {
+        return Float.MAX_VALUE;
+    }
+
+    public float SoftDamageCap() {
         return Float.MAX_VALUE;
     }
 

@@ -96,6 +96,7 @@ public class WeaponWorkbenchBlock_Model extends AdvancedEntityModel<Entity> {
 		radiant.addChild(cube_r3);
 		setRotationAngle(cube_r3, 0.0F, 0.7854F, 0.0F);
 		cube_r3.setTextureOffset(25, 32).addBox(-1.0F, -6.0F, -1.0F, 6.0F, 6.0F, 0.0F, 0.0F, false);
+		this.updateDefaultPose();
 	}
 
 	@Override

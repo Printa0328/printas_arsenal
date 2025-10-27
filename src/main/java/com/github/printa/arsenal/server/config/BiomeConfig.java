@@ -15,14 +15,7 @@ import java.util.Map;
 
 public class BiomeConfig {
 
-	public static final Pair<String, SpawnBiomeData> deepling = Pair.of("arsenal:deepling_spawns", DefaultBiomes.DEEPLING);
-	public static final Pair<String, SpawnBiomeData> deepling_angler = Pair.of("arsenal:deepling_angler_spawns", DefaultBiomes.DEEPLING);
-	public static final Pair<String, SpawnBiomeData> coral_golem = Pair.of("arsenal:coral_golem_spawns", DefaultBiomes.DEEPLING);
-	public static final Pair<String, SpawnBiomeData> deepling_brute = Pair.of("arsenal:deepling_brute_spawns", DefaultBiomes.DEEPLING);
-	public static final Pair<String, SpawnBiomeData> deepling_priest = Pair.of("arsenal:deepling_priest_spawns", DefaultBiomes.DEEPLING);
-	public static final Pair<String, SpawnBiomeData> deepling_warlock = Pair.of("arsenal:deepling_warlock_spawns", DefaultBiomes.DEEPLING);
-	public static final Pair<String, SpawnBiomeData> amethyst_crab = Pair.of("arsenal:amethyst_crab_spawns", DefaultBiomes.CRAB);
-	public static final Pair<String, SpawnBiomeData> koboleton = Pair.of("arsenal:koboleton_spawns", DefaultBiomes.KOBOLETON);
+	//public static final Pair<String, SpawnBiomeData> test = Pair.of("arsenal:test", DefaultBiomes.DEEPLING);
 
 	private static boolean init = false;
 	private static final Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

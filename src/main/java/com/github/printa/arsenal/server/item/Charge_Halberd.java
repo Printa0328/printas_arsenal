@@ -1,13 +1,12 @@
 package com.github.printa.arsenal.server.item;
 
 import com.github.printa.arsenal.Arsenal;
-import com.github.printa.arsenal.server.event.ServerEventHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import com.github.printa.arsenal.server.registry.ModSounds;
+import com.github.printa.arsenal.server.registries.SoundRegistry;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
@@ -28,7 +27,6 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.event.level.NoteBlockEvent;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -84,20 +82,20 @@ public class Charge_Halberd extends Item {
 			if (charge <= 10) {
 				if (phase != 0 ) {
 					setModeNone(stack);
-					player.playSound(ModSounds.PHASE_CHANGE.get(), 0.5F, 0.65F);
+					player.playSound(SoundRegistry.PHASE_CHANGE.get(), 0.5F, 0.65F);
 					player.getCooldowns().addCooldown(this, 15);
 					return InteractionResultHolder.consume(stack);
 				}
 			} else {
 				setModeHalberd(stack);
-				player.playSound(ModSounds.PHASE_CHANGE.get(), 0.5F, 1.15F);
+				player.playSound(SoundRegistry.PHASE_CHANGE.get(), 0.5F, 1.15F);
 				player.getCooldowns().addCooldown(this, 15);
 				return InteractionResultHolder.consume(stack);
 			}
 		} else {
 			if (charge >= 5) {
 				setMode(stack);
-				player.playSound(ModSounds.PHASE_CHANGE.get(), 0.6F, 1.0F);
+				player.playSound(SoundRegistry.PHASE_CHANGE.get(), 0.6F, 1.0F);
 				player.getCooldowns().addCooldown(this, 15);
 				return InteractionResultHolder.consume(stack);
 			}
@@ -107,8 +105,8 @@ public class Charge_Halberd extends Item {
 	}
 
 	//public AnimationHolder getCastStartAnimation() {return PlayerAnimation.CHARGE_HALBERD_CHARGE;}
-	public static void setMode(ItemStack p_40887_) {
-		CompoundTag compoundtag = p_40887_.getOrCreateTag();
+	public static void setMode(ItemStack stack) {
+		CompoundTag compoundtag = stack.getOrCreateTag();
 		int phase = compoundtag.getInt("phase");
 		int charge = compoundtag.getInt("charge");
 		
@@ -119,33 +117,33 @@ public class Charge_Halberd extends Item {
 			}
 
 		compoundtag.putInt("phase", phase);
-		p_40887_.setTag(compoundtag);
+		stack.setTag(compoundtag);
 	}
 
-	public static void setModeNone(ItemStack p_40887_) {
-		CompoundTag compoundtag = p_40887_.getOrCreateTag();
+	public static void setModeNone(ItemStack stack) {
+		CompoundTag compoundtag = stack.getOrCreateTag();
 		int phase = compoundtag.getInt("phase");
 
 			phase = 0;
 
 		compoundtag.putInt("phase", phase);
-		p_40887_.setTag(compoundtag);
+		stack.setTag(compoundtag);
 	}
 
-	public static void setModeHalberd(ItemStack p_40887_) {
-		CompoundTag compoundtag = p_40887_.getOrCreateTag();
+	public static void setModeHalberd(ItemStack stack) {
+		CompoundTag compoundtag = stack.getOrCreateTag();
 		int phase = compoundtag.getInt("phase");
 
 		phase = 3;
 
 		compoundtag.putInt("phase", phase);
-		p_40887_.setTag(compoundtag);
+		stack.setTag(compoundtag);
 	}
 
-	private Multimap<Attribute, AttributeModifier> getOrCreateDurabilityAttributes(ItemStack p_40887_) {
-		CompoundTag compoundtag = p_40887_.getOrCreateTag();
+	private Multimap<Attribute, AttributeModifier> getOrCreateDurabilityAttributes(ItemStack stack) {
+		CompoundTag compoundtag = stack.getOrCreateTag();
 		int phase = compoundtag.getInt("phase");
-		double reach = REACH + (phase == 1 ? 1.0 : phase == 3 ? 1 : 0.0) * 2;
+		double reach = REACH + (phase == 1 ? 1.0 : phase == 3 ? 1 : 0.0) * 1.5;
 		double damage = DAMAGE + (phase == 2 ? 1.0 : phase == 3 ? 1 : 0.0) * 4;
 		double speed = SPEED + (phase == 1 ? 1.0 : phase == 3 ? 1 : 0.0) * 0.4;
 		UUID uuid = WEAPON_MODIFIERS[0];
@@ -157,8 +155,8 @@ public class Charge_Halberd extends Item {
 		return attributeModifierMultimap;
 	}
 
-	public static boolean isNone(ItemStack p_40933_) {
-		CompoundTag compoundtag = p_40933_.getTag();
+	public static boolean isNone(ItemStack stack) {
+		CompoundTag compoundtag = stack.getTag();
 		return compoundtag != null && compoundtag.getInt("phase") == 0;
 	}
 
@@ -167,17 +165,17 @@ public class Charge_Halberd extends Item {
 		return compoundtag != null && compoundtag.getInt("phase") == 1;
 	}
 
-	public static boolean isAxe(ItemStack p_40933_) {
-		CompoundTag compoundtag = p_40933_.getTag();
+	public static boolean isAxe(ItemStack stack) {
+		CompoundTag compoundtag = stack.getTag();
 		return compoundtag != null && compoundtag.getInt("phase") == 2;
 	}
 
-	public static boolean isHalberd(ItemStack p_40933_) {
-		CompoundTag compoundtag = p_40933_.getTag();
+	public static boolean isHalberd(ItemStack stack) {
+		CompoundTag compoundtag = stack.getTag();
 		return compoundtag != null && compoundtag.getInt("phase") == 3;
 	}
 
-	private boolean isCharged(Player player, ItemStack stack){
+	private boolean attackStrengthScale(Player player, ItemStack stack){
 		return player.getAttackStrengthScale(0.5F) > 0.9F;
 	}
 
@@ -192,23 +190,23 @@ public class Charge_Halberd extends Item {
 				--charge;
 				if (charge <= 0) {
 					setModeNone(stack);
-					target.playSound(ModSounds.PHASE_CHANGE.get(), 0.5F, 0.65F);
+					target.playSound(SoundRegistry.PHASE_CHANGE.get(), 0.5F, 0.65F);
 				}
 				if (Math.random() < 0.5) {
 					if (charge > 0) {
 						--charge;
 						if (charge <= 0) {
 							setModeNone(stack);
-							target.playSound(ModSounds.PHASE_CHANGE.get(), 0.5F, 0.65F);
+							target.playSound(SoundRegistry.PHASE_CHANGE.get(), 0.5F, 0.65F);
 						}
 					}
 				}
 			}
-		} else if ((isCharged(player, stack)) && charge < 20) {
+		} else if ((attackStrengthScale(player, stack)) && charge < 20) {
 			++charge;
 		} if (!target.level().isClientSide) {
 			if (phase != 0) {
-				target.playSound(ModSounds.HALBERD_ATTACK_1.get(), 0.6f, 1F + target.getRandom().nextFloat() * 0.5F);
+				target.playSound(SoundRegistry.HALBERD_ATTACK_1.get(), 0.6f, 1F + target.getRandom().nextFloat() * 0.5F);
 			}
 		}
 			compoundtag.putInt("charge", charge);

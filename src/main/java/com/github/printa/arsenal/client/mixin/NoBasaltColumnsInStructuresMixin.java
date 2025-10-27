@@ -1,6 +1,7 @@
 package com.github.printa.arsenal.client.mixin;
 
-import com.github.printa.arsenal.server.registry.ModTag;
+import com.github.printa.arsenal.client.mixin.accessor.WorldGenRegionAccessor;
+import com.github.printa.arsenal.server.registries.TagRegistry;
 import com.github.printa.arsenal.util.MixinUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -39,7 +40,7 @@ public class NoBasaltColumnsInStructuresMixin {
 
         Registry<Structure> configuredStructureFeatureRegistry = levelAccessor.registryAccess().registryOrThrow(Registries.STRUCTURE);
         StructureManager structureManager = ((WorldGenRegionAccessor)levelAccessor).getStructureManager();
-        for (Holder<Structure> configuredStructureFeature : configuredStructureFeatureRegistry.getOrCreateTag(ModTag.BLOCKED_BASALT)) {
+        for (Holder<Structure> configuredStructureFeature : configuredStructureFeatureRegistry.getOrCreateTag(TagRegistry.BLOCKED_BASALT)) {
             if (MixinUtil.getStructureAt(structureManager, mutableBlockPos,  configuredStructureFeature.value()).isValid()) {
                 cir.setReturnValue(false);
                 return;

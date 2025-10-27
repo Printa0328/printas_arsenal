@@ -1,7 +1,7 @@
 package com.github.printa.arsenal.client.particle;
 
-import com.github.printa.arsenal.client.render.CMRenderTypes;
-import com.github.printa.arsenal.server.registry.ModParticle;
+import com.github.printa.arsenal.client.render.RenderUtil;
+import com.github.printa.arsenal.server.registries.ParticleRegistry;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -35,7 +35,7 @@ public class OrbParticle extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return CMRenderTypes.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
+        return RenderUtil.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
     }
 
     @Override
@@ -130,7 +130,7 @@ public class OrbParticle extends TextureSheetParticle {
 
         @Override
         public ParticleType<OrbData> getType() {
-            return ModParticle.ORB.get();
+            return ParticleRegistry.ORB.get();
         }
 
         @OnlyIn(Dist.CLIENT)

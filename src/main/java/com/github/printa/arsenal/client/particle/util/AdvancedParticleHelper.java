@@ -1,7 +1,7 @@
 package com.github.printa.arsenal.client.particle.util;
 
 import com.github.printa.arsenal.client.particle.util.quaternion.QuaternionUtils;
-import com.github.printa.arsenal.client.render.CMRenderTypes;
+import com.github.printa.arsenal.client.render.RenderUtil;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -64,7 +64,7 @@ public class AdvancedParticleHelper extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return CMRenderTypes.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
+        return RenderUtil.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
     }
 
     public int getLightColor(float partialTick) {
@@ -116,17 +116,21 @@ public class AdvancedParticleHelper extends TextureSheetParticle {
     }
 
     protected void updatePosition() {
-        //this.motionY -= 0.04D * (double)this.particleGravity;
-        this.move(this.xd, this.yd, this.zd);
+        //particle arsenal:adv_slash 1 1 1 1 1 face_camera 30 0 1 1 true 100 1 true ~ ~ ~ 0 0 0 1 1
+        if (airDiffusionSpeed == 0.0) {
+            return;
+        }else
+            //this.motionY -= 0.04D * (double)this.particleGravity;
+            this.move(this.xd, this.yd, this.zd);
 
         if (this.onGround && hasPhysics) {
-            this.xd *= 0.699999988079071D;
-            this.zd *= 0.699999988079071D;
+                this.xd *= 0.699999988079071D;
+                this.zd *= 0.699999988079071D;
         }
 
-        this.xd *= airDiffusionSpeed;
-        this.yd *= airDiffusionSpeed;
-        this.zd *= airDiffusionSpeed;
+            this.xd *= airDiffusionSpeed;
+            this.yd *= airDiffusionSpeed;
+            this.zd *= airDiffusionSpeed;
     }
 
     @Override

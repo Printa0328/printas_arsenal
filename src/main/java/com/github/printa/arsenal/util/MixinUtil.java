@@ -1,7 +1,7 @@
 package com.github.printa.arsenal.util;
 
-import com.github.printa.arsenal.client.mixin.StructureManagerAccessor;
-import com.github.printa.arsenal.client.mixin.WorldGenRegionAccessor;
+import com.github.printa.arsenal.client.mixin.accessor.StructureManagerAccessor;
+import com.github.printa.arsenal.client.mixin.accessor.WorldGenRegionAccessor;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;

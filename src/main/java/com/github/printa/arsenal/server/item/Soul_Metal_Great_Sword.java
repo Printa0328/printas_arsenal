@@ -1,16 +1,12 @@
 package com.github.printa.arsenal.server.item;
 
 import com.github.printa.arsenal.Arsenal;
-import com.github.printa.arsenal.client.particle.util.AdvancedParticleHelper;
-import com.github.printa.arsenal.client.particle.util.ParticleComponent;
-import com.github.printa.arsenal.client.particle.util.RibbonComponent;
-import com.github.printa.arsenal.client.particle.util.anim.AnimData;
+import com.github.printa.arsenal.api.player.KeyframeAnimationHelper;
 import com.github.printa.arsenal.server.entity.projectile.Ray_Of_Fire_Visual_Entity;
-import com.github.printa.arsenal.server.registry.EnchantmentRegistry;
-import com.github.printa.arsenal.server.registry.ModParticle;
-import com.github.printa.arsenal.server.registry.ModSounds;
+import com.github.printa.arsenal.server.registries.EnchantmentRegistry;
+import com.github.printa.arsenal.server.registries.SoundRegistry;
 import com.github.printa.arsenal.util.PRAamageTypes;
-import com.github.printa.arsenal.client.particle.util.ParticleHelper;
+import com.github.printa.arsenal.client.particle.util.ParticleHolder;
 import com.github.printa.arsenal.util.raycast;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -41,9 +37,9 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 import net.minecraft.nbt.CompoundTag;
+import org.jetbrains.annotations.NotNull;
 
 import static com.github.printa.arsenal.api.attack.PlayerAnimation.*;
-import static com.github.printa.arsenal.api.player.ClientSpellCastHelper.animatePlayerStart;
 
 public class Soul_Metal_Great_Sword extends Item {
     private int repairTick = 0;
@@ -58,23 +54,29 @@ public class Soul_Metal_Great_Sword extends Item {
         this.defaultAttributes = builder.build();
     }
 
+    private boolean attackStrengthScale(Player player){
+        return player.getAttackStrengthScale(0.0F) > 0.85F;
+    }
+
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public boolean hurtEnemy(@NotNull ItemStack stack, LivingEntity target, @NotNull LivingEntity attacker) {
         if (!target.level().isClientSide()) {
-            if (target.isOnFire()) {
-                fireTick = Math.min(fireTick + 80, 240);
+            if(attacker instanceof Player player) {
+                if (attackStrengthScale(player)) {
+                    if (target.isOnFire()) {
+                        fireTick = Math.min(fireTick + 80, 240);
+                    }
+                }
             }
         }
-        stack.hurtAndBreak(1, attacker, (entity) -> {
-            entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-        });
+        stack.hurtAndBreak(1, attacker, (entity) -> entity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         return super.hurtEnemy(stack, target, attacker);
     }
 
-    public boolean mineBlock(ItemStack stack, Level level, BlockState blockState, BlockPos blockpos, LivingEntity livingentity) {
-        if ((double)blockState.getDestroySpeed(level, blockpos) != 0.0D) {
-            stack.hurtAndBreak(1, livingentity, (p_43385_) -> {
-                p_43385_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+    public boolean mineBlock(@NotNull ItemStack stack, @NotNull Level level, BlockState state, @NotNull BlockPos pos, @NotNull LivingEntity entity) {
+        if ((double)state.getDestroySpeed(level, pos) != 0.0D) {
+            stack.hurtAndBreak(1, entity, ($$0) -> {
+                $$0.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
         }
 
@@ -82,8 +84,8 @@ public class Soul_Metal_Great_Sword extends Item {
     }
 
     @Override
-    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int count) {
-        super.onUseTick(level, livingEntity, stack, count);
+    public void onUseTick(@NotNull Level level, @NotNull LivingEntity entity, @NotNull ItemStack stack, int count) {
+        super.onUseTick(level, entity, stack, count);
     }
 
     public static boolean getFireTexture(ItemStack stack) {
@@ -104,7 +106,7 @@ public class Soul_Metal_Great_Sword extends Item {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
+    public void inventoryTick(ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slot, boolean selected) {
         //if (!(entity instanceof Player player)) return;
         Player player = (Player) entity;
         CompoundTag tag = stack.getOrCreateTag();
@@ -112,9 +114,9 @@ public class Soul_Metal_Great_Sword extends Item {
         boolean heldHand = player.getMainHandItem() == stack;
 
         //tag.putInt("fireTick", fireTick);
-        if (!heldHand) {
+        /**if (!heldHand) {
             fireTick = 0;
-        } else {
+        } else {*/
             if (player.isOnFire()) {
                 fireTick = Math.min(fireTick + 80, 240);
             }
@@ -135,15 +137,15 @@ public class Soul_Metal_Great_Sword extends Item {
                     }
                 }
             }
-        }
+        /*}*/
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
         if (fireTick > 0) {
-            player.playSound(ModSounds.CAST_FIRE.get(), 1.0F, 1.0F);
+            player.playSound(SoundRegistry.CAST_FIRE.get(), 1.0F, 1.0F);
             if (stack.getEnchantmentLevel(EnchantmentRegistry.EMBER_OF_RAY.get()) > 0) {
                 player.getCooldowns().addCooldown(this, 90 - 15 * stack.getEnchantmentLevel(EnchantmentRegistry.EMBER_OF_RAY.get()));
             } else {
@@ -159,24 +161,29 @@ public class Soul_Metal_Great_Sword extends Item {
                 }
                 target.setSecondsOnFire(3);
                 target.hurt(PRAamageTypes.fireDamage(livingEntity, player), (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5f);
-                ParticleHelper.spawnParticles(level, ParticleTypes.SOUL_FIRE_FLAME, hitResult.getLocation().x, target.getY(), hitResult.getLocation().z, 4, 0, 0, 0, 0.1, true);
+                ParticleHolder.spawnParticles(level, ParticleTypes.SOUL_FIRE_FLAME, hitResult.getLocation().x, target.getY(), hitResult.getLocation().z, 4, 0, 0, 0, 0.1, true);
             } else if (hitResult.getType() == HitResult.Type.BLOCK) {
-                ParticleHelper.spawnParticles(level, ParticleTypes.SOUL_FIRE_FLAME, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, 4, 0, 0, 0, 0.1, true);
+                ParticleHolder.spawnParticles(level, ParticleTypes.SOUL_FIRE_FLAME, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, 4, 0, 0, 0, 0.1, true);
             }
-            ParticleHelper.spawnParticles(level, ParticleTypes.SOUL_FIRE_FLAME, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, 50, 0, 0, 0, 0.05, true);
+            ParticleHolder.spawnParticles(level, ParticleTypes.SOUL_FIRE_FLAME, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, 50, 0, 0, 0, 0.05, true);
             if (level.isClientSide()) {
-                LASER_CAST.getForPlayer().ifPresent(resourceLocation -> animatePlayerStart(player, resourceLocation));
+                //LASER_CAST.getForPlayer().ifPresent(resourceLocation -> animatePlayerStart(player, resourceLocation));
+                LASER_CAST.getForPlayer().ifPresent(firstPersonAnim ->
+                        LASER_CAST.getForPlayer().ifPresent(thirdPersonAnim ->
+                                KeyframeAnimationHelper.animatePlayerStart(player, firstPersonAnim, thirdPersonAnim)
+                        )
+                );
             }
-            stack.hurtAndBreak(1, player, (p_43388_) -> {
-                p_43388_.broadcastBreakEvent(player.getUsedItemHand());
+            stack.hurtAndBreak(1, player, (sound) -> {
+                sound.broadcastBreakEvent(player.getUsedItemHand());
             });
             return InteractionResultHolder.consume(stack);
         }
         return InteractionResultHolder.fail(stack);
     }
 
-    public boolean canAttackBlock(BlockState p_43409_, Level p_43410_, BlockPos p_43411_, Player p_43412_) {
-        return !p_43412_.isCreative();
+    public boolean canAttackBlock(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pose, Player player) {
+        return !player.isCreative();
     }
 
     public static float getRange(int level, LivingEntity caster) {
@@ -184,12 +191,12 @@ public class Soul_Metal_Great_Sword extends Item {
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
+    public boolean isEnchantable(@NotNull ItemStack stack) {
         return true;
     }
 
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-        return equipmentSlot == EquipmentSlot.MAINHAND ? this.defaultAttributes : super.getDefaultAttributeModifiers(equipmentSlot);
+    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot equipmentslot) {
+        return equipmentslot == EquipmentSlot.MAINHAND ? this.defaultAttributes : super.getDefaultAttributeModifiers(equipmentslot);
     }
 
     @Override
@@ -207,7 +214,7 @@ public class Soul_Metal_Great_Sword extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, @NotNull TooltipFlag flag) {
         tooltip.add(Component.translatable("item.arsenal.soul_metal_great_sword.desc").withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.translatable("item.arsenal.soul_metal_great_sword2.desc").withStyle(ChatFormatting.GRAY));
     }

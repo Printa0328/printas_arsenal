@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class Werewolf_Renderer extends MobRenderer<Werewolf_Entity, EntityModel<Werewolf_Entity>> {
-    private static final ResourceLocation WEREWOLF_TEXTURES = new ResourceLocation(Arsenal.MODID, "textures/entity/werewolf.png");
+    private static final ResourceLocation WEREWOLF_TEXTURES = ResourceLocation.fromNamespaceAndPath(Arsenal.MODID, "textures/entity/werewolf.png");
     private final EntityModel<Werewolf_Entity> defaultModel;
     private final EntityModel<Werewolf_Entity> weaponModel;
 
